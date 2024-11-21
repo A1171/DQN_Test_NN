@@ -57,6 +57,6 @@ TrainUpdateRate=10
 TrainSettings=[gamma,initial_epsilon,final_epsilon,epsilon_decay_factor,observation_steps,target_model_update_rate,learning_rate,batch_size,memory_capacity,TrainUpdateRate]
 
 #Тренер
-Trainer=ModelTrainer(TrainSettings,[main_model,target_model],TraidingEnv, load_pretrained=True)
+Trainer=ModelTrainer(TrainSettings,[main_model,target_model],TraidingEnv, load_pretrained=load_pretrained)
 #Тренировка моделей
 Trainer.train_cycle()
