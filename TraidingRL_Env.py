@@ -22,19 +22,6 @@ import random
 import os
 
 class TraidingEnvMy():
-    def TransformToStationary_v2(self,InputArray,d=0.6,WLen=150):
-      w=[1]
-      for k in range(1,WLen):
-        w.append(-w[-1]*(d-k+1)/k)
-      w=np.array(w)
-      #print(w)
-      NewArray=[]
-      for i in range(InputArray.shape[1]):
-          NewArray.append(np.convolve(InputArray[:,i].reshape(-1),w, 'valid'))
-      NewArray=np.array(NewArray).transpose()
-      return NewArray
-    def GetRecord(self,Pos):
-        return self.signal_featuresSt[Pos-self.SequencyLen+1:Pos+1],self.signal_times[Pos]
     def __init__(self,df,QuatePipelineSettings):
         #super().__init__(verbose)
         self.SequencyLen,self.Derivative_d,self.Derivative_WLen,self.ReduseLoss,MakePCA=QuatePipelineSettings
@@ -198,7 +185,19 @@ class Priority_Tree:
 
     data_index = leaf_index - self.memory_capacity + 1                #Индекс из массива равен индексу из дерева — размер_памяти + 1
     return leaf_index, self.tree[leaf_index], self.data[data_index]   #Возвращаем индекс узла, приоритет индекса из дерева приоритетов и соответствующие сэмплы данных
-
+def TransformToStationary_v2(self,InputArray,d=0.6,WLen=150):
+      #######Hidden code#######
+      #######Hidden code#######
+      #######Hidden code#######
+      #######Hidden code#######
+      NewArray=[]
+      for i in range(InputArray.shape[1]):
+          NewArray.append(np.convolve(InputArray[:,i].reshape(-1),w, 'valid'))
+      NewArray=np.array(NewArray).transpose()
+      return NewArray
+def GetRecord(self,Pos):
+        return self.signal_featuresSt[Pos-self.SequencyLen+1:Pos+1],self.signal_times[Pos]
+    
   @property                    #Добавляем метод с декоратором свойства
   def total_priority(self):
     return self.tree[0]        #Этот метод возвращает приоритет первого элемента (что по определению — сумма всех остальных приоритетов)
