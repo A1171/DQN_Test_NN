@@ -116,37 +116,6 @@ class TraidingEnvMy():
         self.__LastReward=Reward
         return [envState,self.CurrentPosition],Reward,self.Done
         
-def dueling_DQN_CONVLSTM(input_shape1,input_shape2, action_size, learning_rate):
-  state_input1 = keras.layers.Input(shape=(input_shape1))
-  state_input2 = keras.layers.Input(shape=(input_shape2))
-  x = keras.layers.Conv1D(32, 3,padding="valid", activation='tanh',)(state_input1)
-  x = keras.layers.Conv1D(32, 3,padding="valid", activation='tanh',)(x)
-  x = keras.layers.MaxPooling1D(2)(x)
-  x = keras.layers.LSTM(32,return_sequences=False)(x)
-  x = keras.layers.Concatenate()([x,state_input2])
-
-  # Ветка значения состояния — пытается предсказать значения состояния V(s)
-  state_value = keras.layers.Dense(256, activation='relu')(x)          #Добавляем скрытый полносвязный слой с 256 нейронами
-  state_value = keras.layers.Dense(1)(state_value)                     #Добавляем полносвязный слой с одним нейроном, который будет считать скалярное значение V(s)
-  #Нам нужно добавить размерность к этому слою для дальнейшего суммирования с веткой преимущества. Это делается через лямбда-слой
-  state_value = keras.layers.Lambda(lambda s: K.expand_dims(s[:, 0], axis=-1), output_shape=(action_size,))(state_value) 
-
-  # Ветка преимущества действия — пытается предсказать значения преимущества А(s, а) для каждого возможного действия а
-  action_advantage = keras.layers.Dense(256, activation='relu')(x)     #Добавляем скрытый полносвязный слой с 256 нейронами
-  action_advantage = keras.layers.Dense(action_size)(action_advantage) #Добавляем полносвязный слой с action_size количеством нейронов (action_size — это количество уникальных возможных действий)
-  #Чтобы заставить эту ветку считать преимущества, мы добавляем самописную функцию, которая вычитывает среднее значение. Таким образом, все преимущества 
-  #которые ниже среднего становятся отрицательными, а все значения выше среднего остаются положительными.
-  action_advantage = keras.layers.Lambda(lambda a: a[:, :] - K.mean(a[:, :], keepdims=True), output_shape=(action_size,))(action_advantage) 
-
-  # Суммируем преимущества и значения состояний, чтобы получить Q(s, a) для каждого возможного действия а
-  state_action_value = keras.layers.Add()([state_value, action_advantage])
-  optimizer = keras.optimizers.legacy.RMSprop(learning_rate = learning_rate) 
-  #optimizer = keras.optimizers.legacy.Adam(learning_rate = learning_rate)
-
-  loss_function = tf.keras.losses.Huber(delta = 2)
-  model = keras.models.Model([state_input1,state_input2], state_action_value) #Создаем модель, которая принимает на вход состояние среды и возвращает все значения Q(s, a)
-  model.compile(loss = loss_function, optimizer = optimizer) #Компилируем модель, используя функцию ошибки, которую объявляем ниже
-  return model   #Функция возвращает модель
 def dueling_DQN_LSTM(input_shape1,input_shape2, action_size, learning_rate):
   state_input1 = keras.layers.Input(shape=(input_shape1))
   state_input2 = keras.layers.Input(shape=(input_shape2))
