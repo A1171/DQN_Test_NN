@@ -20,7 +20,7 @@ DQN share traiding. First test
 Direction=1(Position=Long) Direction=-1(Position=Short)
 3. В случае открытия позиции если отсутствовала Reward=(Close[i]-Close[i-1]) * Direction - Comission * Close[i-1]
 Comission - комиссия в долях от объема сделки. В коде 0.001(0.1%)
-4. В случае переворота позиции Reward=(Close[i]-Close[i-1])*Direction - 2*Comission*Close[i-1]
+4. В случае переворота позиции Reward=(Close[i]-Close[i-1]) * Direction - 2 * Comission * Close[i-1]
 Комиссия удваивается т.к. проторгован двойной объем.
 
 Код функции смотрите строка 75 файла TraidingRL_Env.py. Функция def Step(self): класса TraidingEnvMy. Функция получает на вход действие (BUY, HOLD, SELL) (1,0,-1)
