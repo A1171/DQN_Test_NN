@@ -18,7 +18,7 @@ DQN share traiding. First test
 1. В случае отсутствия позиции и выбора HOLD Reward=0
 2. В случае наличия позиции и выбора HOLD Reward=(Close[i]-Close[i-1])*Direction
 Direction=1(Position=Long) Direction=-1(Position=Short)
-3. В случае открытия позиции если отсутствовала Reward=(Close[i]-Close[i-1])*Direction - Comission*Close[i-1]
+3. В случае открытия позиции если отсутствовала Reward=(Close[i]-Close[i-1]) * Direction - Comission * Close[i-1]
 Comission - комиссия в долях от объема сделки. В коде 0.001(0.1%)
 4. В случае переворота позиции Reward=(Close[i]-Close[i-1])*Direction - 2*Comission*Close[i-1]
 Комиссия удваивается т.к. проторгован двойной объем.
